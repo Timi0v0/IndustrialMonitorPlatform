@@ -41,7 +41,10 @@ public static class Program
             Log.CloseAndFlush();
         }
     }
-
+    /// <summary>
+    /// ×¢²á·þÎñ
+    /// </summary>
+    /// <param name="services"></param>
     private static void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<App>();

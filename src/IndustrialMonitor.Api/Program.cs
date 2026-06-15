@@ -1,4 +1,7 @@
+using IndustrialMonitor.Application.Devices;
+using IndustrialMonitor.Application.Interfaces;
 using IndustrialMonitor.Infrastructure.Database;
+using IndustrialMonitor.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -12,19 +15,33 @@ builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    // 加载 XML 注释文件，使 Swagger 显示接口说明
+    var xmlFiles = Directory.GetFiles(AppContext.BaseDirectory, "*.xml", SearchOption.TopDirectoryOnly);
+    foreach (var xmlFile in xmlFiles)
+    {
+        c.IncludeXmlComments(xmlFile, includeControllerXmlComments: true);
+    }
+});
 builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// 注册业务服务
+builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+builder.Services.AddScoped<DeviceService>();
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+// 始终启用 Swagger（不限环境，方便演示和调试）
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "IndustrialMonitor API v1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseAuthorization();
 app.MapControllers();
