@@ -1,0 +1,152 @@
+<UserControl x:Class="IndustrialMonitor.Wpf.Views.DeviceEditView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:vm="clr-namespace:IndustrialMonitor.Wpf.ViewModels"
+             d:DataContext="{d:DesignInstance vm:DeviceEditViewModel}"
+             mc:Ignorable="d"
+             Width="560">
+    <Border Background="{StaticResource SurfaceBrush}"
+            Padding="22">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="0,0,0,18">
+                <TextBlock Text="设备信息"
+                           Style="{StaticResource PageTitleText}"
+                           FontSize="20"/>
+                <TextBlock Text="配置采集设备的基础信息和通信参数"
+                           Style="{StaticResource PageSubtitleText}"/>
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="基础信息"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,12"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="14"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="设备编码" Style="{StaticResource FormLabelText}"/>
+                            <hc:TextBox Text="{Binding DeviceCode}"
+                                        hc:InfoElement.Placeholder="例如: TEMP-001"
+                                        MaxLength="50"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="设备名称" Style="{StaticResource FormLabelText}"/>
+                            <hc:TextBox Text="{Binding DeviceName}"
+                                        hc:InfoElement.Placeholder="例如: 温度传感器1号"
+                                        MaxLength="100"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,14,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="14"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="设备类型" Style="{StaticResource FormLabelText}"/>
+                            <hc:TextBox Text="{Binding DeviceType}"
+                                        hc:InfoElement.Placeholder="例如: 温度传感器"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="通信协议" Style="{StaticResource FormLabelText}"/>
+                            <hc:ComboBox Text="{Binding ProtocolType}">
+                                <ComboBoxItem Content="TCP" IsSelected="True"/>
+                                <ComboBoxItem Content="Modbus"/>
+                                <ComboBoxItem Content="MQTT"/>
+                            </hc:ComboBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Height="1"
+                            Background="#E5EAF2"
+                            Margin="0,20,0,16"/>
+
+                    <TextBlock Text="通信参数"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,12"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="14"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="IP 地址" Style="{StaticResource FormLabelText}"/>
+                            <hc:TextBox Text="{Binding IpAddress}"
+                                        hc:InfoElement.Placeholder="例如: 192.168.1.100"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="端口号" Style="{StaticResource FormLabelText}"/>
+                            <hc:NumericUpDown Value="{Binding Port}"
+                                              Minimum="1"
+                                              Maximum="65535"
+                                              Increment="1"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,14,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="14"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="采集间隔 (ms)" Style="{StaticResource FormLabelText}"/>
+                            <hc:NumericUpDown Value="{Binding CollectInterval}"
+                                              Minimum="1000"
+                                              Maximum="60000"
+                                              Increment="1000"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
+                            <CheckBox IsChecked="{Binding IsEnabled}"
+                                      Content="启用设备"
+                                      Margin="0,0,0,8"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Margin="0,14,0,0">
+                        <TextBlock Text="备注" Style="{StaticResource FormLabelText}"/>
+                        <hc:TextBox Text="{Binding Remark}"
+                                    hc:InfoElement.Placeholder="可选备注信息"
+                                    MaxLength="500"
+                                    AcceptsReturn="True"
+                                    Height="76"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Grid Grid.Row="2" Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1"
+                        Content="保存"
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource ButtonPrimary}"
+                        Width="112"/>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

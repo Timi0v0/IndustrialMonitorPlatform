@@ -1,5 +1,10 @@
+using IndustrialMonitor.Shared.Dtos;
+using IndustrialMonitor.Wpf.Services;
+using IndustrialMonitor.Wpf.ViewModels;
+using IndustrialMonitor.Wpf.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Refit;
 using Serilog;
 using System.Windows;
 
@@ -41,13 +46,25 @@ public static class Program
             Log.CloseAndFlush();
         }
     }
-    /// <summary>
-    /// ע�����
-    /// </summary>
-    /// <param name="services"></param>
+
     private static void ConfigureServices(IServiceCollection services)
     {
+        // 基础服务
         services.AddSingleton<App>();
         services.AddSingleton<MainWindow>();
+        services.AddSingleton<DeviceListView>();
+        services.AddTransient<DeviceEditView>();
+
+        // Refit API 客户端
+        var apiBaseUrl = services.BuildServiceProvider()
+            .GetRequiredService<IConfiguration>()
+            .GetValue<string>("ApiBaseUrl") ?? "http://localhost:5281";
+
+        services.AddRefitClient<IDeviceApi>()
+            .ConfigureHttpClient(c => c.BaseAddress = new Uri(apiBaseUrl));
+
+        // ViewModels（单例，与 Views 生命周期匹配）
+        services.AddSingleton<DeviceListViewModel>();
+        services.AddTransient<DeviceEditViewModel>();
     }
 }
