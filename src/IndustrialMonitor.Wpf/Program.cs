@@ -59,7 +59,7 @@ public static class Program
         var apiBaseUrl = services.BuildServiceProvider()
             .GetRequiredService<IConfiguration>()
             .GetValue<string>("ApiBaseUrl") ?? "http://localhost:5281";
-
+        //设置 Refit 指向的地址
         services.AddRefitClient<IDeviceApi>()
             .ConfigureHttpClient(c => c.BaseAddress = new Uri(apiBaseUrl));
 

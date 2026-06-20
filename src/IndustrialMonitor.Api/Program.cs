@@ -35,7 +35,7 @@ builder.Services.AddScoped<DeviceService>();
 
 var app = builder.Build();
 
-// 始终启用 Swagger（不限环境，方便演示和调试）
+// 始终启用 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
