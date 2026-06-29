@@ -51,6 +51,7 @@ public static class Program
     {
         // 基础服务
         services.AddSingleton<App>();
+        services.AddSingleton<IThemeService, ThemeService>();
         services.AddSingleton<MainWindow>();
         services.AddSingleton<DeviceListView>();
         services.AddTransient<DeviceEditView>();

@@ -8,7 +8,7 @@
              d:DataContext="{d:DesignInstance vm:DeviceEditViewModel}"
              mc:Ignorable="d"
              Width="560">
-    <Border Background="{StaticResource SurfaceBrush}"
+    <Border Background="{DynamicResource SurfaceBrush}"
             Padding="22">
         <Grid>
             <Grid.RowDefinitions>
@@ -29,7 +29,7 @@
                           VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <TextBlock Text="基础信息"
-                               Foreground="{StaticResource TextMutedBrush}"
+                               Foreground="{DynamicResource TextMutedBrush}"
                                FontSize="12"
                                FontWeight="SemiBold"
                                Margin="0,0,0,12"/>
@@ -76,11 +76,11 @@
                     </Grid>
 
                     <Border Height="1"
-                            Background="#E5EAF2"
+                            Background="{DynamicResource DividerBrush}"
                             Margin="0,20,0,16"/>
 
                     <TextBlock Text="通信参数"
-                               Foreground="{StaticResource TextMutedBrush}"
+                               Foreground="{DynamicResource TextMutedBrush}"
                                FontSize="12"
                                FontWeight="SemiBold"
                                Margin="0,0,0,12"/>

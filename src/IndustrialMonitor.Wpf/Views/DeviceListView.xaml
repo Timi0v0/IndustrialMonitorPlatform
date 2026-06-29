@@ -8,7 +8,7 @@
     xmlns:vm="clr-namespace:IndustrialMonitor.Wpf.ViewModels"
     d:DataContext="{d:DesignInstance vm:DeviceListViewModel}"
     mc:Ignorable="d">
-    <Grid Margin="24" Background="{StaticResource AppBackgroundBrush}">
+    <Grid Margin="24" Background="{DynamicResource AppBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -66,7 +66,7 @@
                 <TextBlock
                     Grid.Column="1"
                     VerticalAlignment="Center"
-                    Foreground="{StaticResource TextMutedBrush}"
+                    Foreground="{DynamicResource TextMutedBrush}"
                     Text="{Binding TotalCount, StringFormat=当前共 {0} 台设备}" />
             </Grid>
         </Border>
@@ -119,10 +119,10 @@
                                     CornerRadius="10">
                                     <Border.Style>
                                         <Style TargetType="Border">
-                                            <Setter Property="Background" Value="#DCFCE7" />
+                                            <Setter Property="Background" Value="{DynamicResource StatusEnabledBackgroundBrush}" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsEnabled}" Value="False">
-                                                    <Setter Property="Background" Value="#FEE2E2" />
+                                                    <Setter Property="Background" Value="{DynamicResource StatusDisabledBackgroundBrush}" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -131,11 +131,11 @@
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Text" Value="启用" />
-                                                <Setter Property="Foreground" Value="#166534" />
+                                                <Setter Property="Foreground" Value="{DynamicResource StatusEnabledForegroundBrush}" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsEnabled}" Value="False">
                                                         <Setter Property="Text" Value="停用" />
-                                                        <Setter Property="Foreground" Value="#991B1B" />
+                                                        <Setter Property="Foreground" Value="{DynamicResource StatusDisabledForegroundBrush}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -177,13 +177,13 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Foreground="{StaticResource TextMutedBrush}"
+                Foreground="{DynamicResource TextMutedBrush}"
                 Text="{Binding TotalCount, StringFormat=共 {0} 条记录}" />
             <TextBlock
                 Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                Foreground="{StaticResource TextMutedBrush}">
+                Foreground="{DynamicResource TextMutedBrush}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="数据已就绪" />
