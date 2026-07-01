@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:i18n="clr-namespace:IndustrialMonitor.Wpf.Markup"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:IndustrialMonitor.Wpf.ViewModels"
     d:DataContext="{d:DesignInstance vm:DeviceListViewModel}"
@@ -16,7 +17,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-
         <Grid Grid.Row="0" Margin="0,0,0,18">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -24,8 +24,8 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0">
-                <TextBlock Style="{StaticResource PageTitleText}" Text="设备管理" />
-                <TextBlock Style="{StaticResource PageSubtitleText}" Text="维护采集设备、通信协议和运行状态" />
+                <TextBlock Style="{StaticResource PageTitleText}" Text="{i18n:Tr Device.Title}" />
+                <TextBlock Style="{StaticResource PageSubtitleText}" Text="{i18n:Tr Device.Subtitle}" />
             </StackPanel>
 
             <StackPanel
@@ -36,11 +36,11 @@
                 <Button
                     Margin="0,0,8,0"
                     Command="{Binding RefreshCommand}"
-                    Content="刷新"
+                    Content="{i18n:Tr Common.Refresh}"
                     Style="{StaticResource ButtonSecondary}" />
                 <Button
                     Command="{Binding AddDeviceCommand}"
-                    Content="新增设备"
+                    Content="{i18n:Tr Device.Add}"
                     Style="{StaticResource ButtonPrimary}" />
             </StackPanel>
         </Grid>
@@ -60,14 +60,14 @@
                     Grid.Column="0"
                     Width="360"
                     HorizontalAlignment="Left"
-                    hc:InfoElement.Placeholder="搜索设备编号或名称..."
+                    hc:InfoElement.Placeholder="{i18n:Tr Device.SearchPlaceholder}"
                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
 
                 <TextBlock
                     Grid.Column="1"
                     VerticalAlignment="Center"
                     Foreground="{DynamicResource TextMutedBrush}"
-                    Text="{Binding TotalCount, StringFormat=当前共 {0} 台设备}" />
+                    Text="{i18n:TrFormat Device.CurrentTotal, Value={Binding TotalCount}}" />
             </Grid>
         </Border>
 
@@ -85,32 +85,32 @@
                     <DataGridTextColumn
                         Width="120"
                         Binding="{Binding DeviceCode}"
-                        Header="设备编码" />
+                        Header="{i18n:Tr Device.Code}" />
                     <DataGridTextColumn
                         Width="1.4*"
                         Binding="{Binding DeviceName}"
-                        Header="设备名称" />
+                        Header="{i18n:Tr Device.Name}" />
                     <DataGridTextColumn
                         Width="1.1*"
                         Binding="{Binding DeviceType}"
-                        Header="设备类型" />
+                        Header="{i18n:Tr Device.Type}" />
                     <DataGridTextColumn
                         Width="90"
                         Binding="{Binding ProtocolType}"
-                        Header="协议" />
+                        Header="{i18n:Tr Device.Protocol}" />
                     <DataGridTextColumn
                         Width="140"
                         Binding="{Binding IpAddress}"
-                        Header="IP 地址" />
+                        Header="{i18n:Tr Device.IpAddress}" />
                     <DataGridTextColumn
                         Width="80"
                         Binding="{Binding Port}"
-                        Header="端口" />
+                        Header="{i18n:Tr Device.Port}" />
                     <DataGridTextColumn
                         Width="120"
                         Binding="{Binding CollectInterval}"
-                        Header="采集间隔(ms)" />
-                    <DataGridTemplateColumn Width="90" Header="状态">
+                        Header="{i18n:Tr Device.CollectInterval}" />
+                    <DataGridTemplateColumn Width="90" Header="{i18n:Tr Device.Status}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border
@@ -127,25 +127,45 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <TextBlock FontSize="12" FontWeight="SemiBold">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Text" Value="启用" />
-                                                <Setter Property="Foreground" Value="{DynamicResource StatusEnabledForegroundBrush}" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsEnabled}" Value="False">
-                                                        <Setter Property="Text" Value="停用" />
-                                                        <Setter Property="Foreground" Value="{DynamicResource StatusDisabledForegroundBrush}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                    <Grid>
+                                        <TextBlock
+                                            FontSize="12"
+                                            FontWeight="SemiBold"
+                                            Foreground="{DynamicResource StatusEnabledForegroundBrush}"
+                                            Text="{i18n:Tr Device.Enabled}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBlock
+                                            FontSize="12"
+                                            FontWeight="SemiBold"
+                                            Foreground="{DynamicResource StatusDisabledForegroundBrush}"
+                                            Text="{i18n:Tr Device.Disabled}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Grid>
                                 </Border>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="150" Header="操作">
+                    <DataGridTemplateColumn Width="150" Header="{i18n:Tr Device.Operation}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -153,12 +173,12 @@
                                         Margin="0,0,6,0"
                                         Command="{Binding DataContext.EditDeviceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
-                                        Content="编辑"
+                                        Content="{i18n:Tr Common.Edit}"
                                         Style="{StaticResource ButtonSmallSecondary}" />
                                     <Button
                                         Command="{Binding DataContext.DeleteDeviceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
-                                        Content="删除"
+                                        Content="{i18n:Tr Common.Delete}"
                                         Style="{StaticResource ButtonDangerSmall}" />
                                 </StackPanel>
                             </DataTemplate>
@@ -178,23 +198,40 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource TextMutedBrush}"
-                Text="{Binding TotalCount, StringFormat=共 {0} 条记录}" />
-            <TextBlock
+                Text="{i18n:TrFormat Device.TotalRecords, Value={Binding TotalCount}}" />
+            <Grid
                 Grid.Column="1"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Foreground="{DynamicResource TextMutedBrush}">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Text" Value="数据已就绪" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                                <Setter Property="Text" Value="正在加载数据..." />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
+                VerticalAlignment="Center">
+                <TextBlock
+                    Foreground="{DynamicResource TextMutedBrush}"
+                    Text="{i18n:Tr Device.DataReady}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock
+                    Foreground="{DynamicResource TextMutedBrush}"
+                    Text="{i18n:Tr Device.Loading}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
